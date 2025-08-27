@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="zh-CN" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="高端优雅的情侣纪念网站 - 爱情的数字化博物馆">
+    <title>我们的爱情时光 - 爱情的数字化博物馆</title>
+    
+    <!-- 预连接 -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    
+    <!-- 关键 CSS 内联 -->
+    <style>
+        body {
+            margin: 0; padding: 0;
+            font-family: 'Inter', system-ui, sans-serif;
+            overflow-x: hidden;
+        }
+        .loading-container {
+            position: fixed; top: 0; left: 0;
+            width: 100%; height: 100vh;
+            background: linear-gradient(135deg, #fff1f2 0%, #ffe4e6 50%, #fecaca 100%);
+            display: flex; align-items: center; justify-content: center;
+            z-index: 9999;
+        }
+        .loading-heart {
+            width: 60px; height: 60px; position: relative;
+        }
+        .loading-heart::before, .loading-heart::after {
+            content: ''; width: 26px; height: 40px;
+            position: absolute; left: 50px; top: 0;
+            transform-origin: 0 100%;
+            border-radius: 26px 26px 0 0;
+            background: linear-gradient(135deg, #ec4899, #f59e0b);
+            animation: heartbeat 1.5s ease-in-out infinite;
+        }
+        .loading-heart::after { left: 26px; transform: rotate(-45deg); transform-origin: 100% 100%; }
+        .loading-heart::before { transform: rotate(45deg); }
+        @keyframes heartbeat {
+            0%, 100% { transform: scale(1) rotate(45deg); }
+            50% { transform: scale(1.1) rotate(45deg); }
+        }
+        #app {
+            min-height: 100vh;
+            transition: opacity 0.5s ease, transform 0.5s ease;
+        }
+        #app.page-leaving { opacity: 0; transform: translateY(-20px); }
+        #app.page-entering { opacity: 0; transform: translateY(20px); }
+        .js-required { opacity: 0; visibility: hidden; }
+        .js-loaded .js-required { opacity: 1; visibility: visible; transition: opacity 0.3s ease; }
+    </style>
+</head>
+<body class="theme-warm">
+    <!-- 主导航栏 -->
+    <nav class="navbar glass-morphism js-required" id="main-nav">
+        <div class="container mx-auto px-6 py-4">
+            <div class="flex justify-between items-center">
+                <div class="flex items-center space-x-3">
+                    <div class="w-10 h-10 rounded-full bg-gradient-to-r from-pink-500 to-purple-500 flex items-center justify-center">
+                        <span class="text-white text-lg">💕</span>
+                    </div>
+                    <h1 class="text-xl font-bold text-gradient">我们的爱情时光</h1>
+                </div>
+                
+                <div class="hidden lg:flex items-center space-x-8">
+                    <a href="/hero" class="nav-link">🏠 首页</a>
+                    <a href="/timeline" class="nav-link">⏰ 时光轴</a>
+                    <a href="/gallery" class="nav-link">🖼️ 画廊</a>
+                    <a href="/about" class="nav-link">💝 关于</a>
+                </div>
+                
+                <div class="hidden lg:flex items-center space-x-4">
+                    <button id="search-btn" class="p-2 rounded-lg hover:bg-white/10" title="搜索">🔍</button>
+                    <button id="theme-toggle" class="p-2 rounded-lg hover:bg-white/10" title="切换主题">🌙</button>
+                </div>
+                
+                <button id="menu-toggle" class="lg:hidden p-2">
+                    <div class="w-6 h-6 flex flex-col justify-center space-y-1">
+                        <span class="block w-6 h-0.5 bg-current"></span>
+                        <span class="block w-6 h-0.5 bg-current"></span>
+                        <span class="block w-6 h-0.5 bg-current"></span>
+                    </div>
+                </button>
+            </div>
+            
+            <div id="mobile-menu" class="hidden lg:hidden mt-6 pb-6">
+                <div class="flex flex-col space-y-4 pt-6">
+                    <a href="/hero" class="nav-link">🏠 首页</a>
+                    <a href="/timeline" class="nav-link">⏰ 时光轴</a>
+                    <a href="/gallery" class="nav-link">🖼️ 画廊</a>
+                    <a href="/about" class="nav-link">💝 关于</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+    
+    <!-- 主内容区域 -->
+    <main id="app" class="min-h-screen">
+        <div class="loading-container">
+            <div class="text-center">
+                <div class="loading-heart mx-auto mb-8"></div>
+                <h2 class="text-2xl font-bold text-gradient mb-4">加载爱的回忆中...</h2>
+                <p class="text-gray-600 mb-6">Love Memorial Museum</p>
+                <div class="w-64 h-2 bg-gray-200 rounded-full overflow-hidden mx-auto">
+                    <div class="h-full bg-gradient-to-r from-pink-500 to-purple-500 animate-pulse"></div>
+                </div>
+            </div>
+        </div>
+    </main>
+    
+    <!-- 返回顶部按钮 -->
+    <button id="back-to-top" class="fixed bottom-8 right-8 w-14 h-14 btn-primary rounded-full shadow-lg opacity-0 invisible z-50 js-required">↑</button>
+    
+    <!-- 模态框容器 -->
+    <div id="modal-container" class="js-required"></div>
+    
+    <!-- 通知容器 -->
+    <div id="notification-container" class="fixed top-4 right-4 z-90 js-required"></div>
+    
+    <script>
+        // 基本初始化
+        document.addEventListener('DOMContentLoaded', () => {
+            document.body.classList.add('js-loaded');
+        });
+        
+        // 全局错误处理
+        window.addEventListener('error', (e) => console.error('Error:', e.error));
+        window.addEventListener('unhandledrejection', (e) => console.error('Unhandled rejection:', e.reason));
+    </script>
+    
+    <!-- 主应用脚本 -->
+    <script type="module" src="/src/main.js"></script>
+    
+    <!-- 无JS降级提示 -->
+    <noscript>
+        <div style="position: fixed; top: 0; left: 0; width: 100%; height: 100vh; background: linear-gradient(135deg, #fff1f2, #ffe4e6); display: flex; align-items: center; justify-content: center; z-index: 9999;">
+            <div style="text-align: center; padding: 2rem; background: rgba(255,255,255,0.9); border-radius: 1rem; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
+                <h1 style="color: #ec4899; margin-bottom: 1rem;">💕 我们的爱情时光</h1>
+                <p style="color: #666; margin-bottom: 1rem;">这个网站需要 JavaScript 才能正常运行。</p>
+                <p style="color: #666; font-size: 0.9rem;">请启用 JavaScript 或使用支持现代 Web 技术的浏览器。</p>
+            </div>
+        </div>
+    </noscript>
+</body>
+</html>
