@@ -80,6 +80,8 @@ out
 
 # Nuxt.js build / generate output
 .nuxt
+# Note: 'docs' directory is NOT ignored as it's used for GitHub Pages
+# dist
 
 # Gatsby files
 .cache/
