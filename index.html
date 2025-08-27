@@ -6,6 +6,21 @@
     <meta name="description" content="高端优雅的情侣纪念网站 - 爱情的数字化博物馆">
     <title>我们的爱情时光 - 爱情的数字化博物馆</title>
     
+    <!-- GitHub Pages SPA 支持 -->
+    <script>
+        // 处理 GitHub Pages 的 404 重定向
+        (function(l) {
+            if (l.search[1] === '/') {
+                var decoded = sessionStorage.redirect || l.search.slice(1);
+                if (decoded) {
+                    sessionStorage.removeItem('redirect');
+                    // 将重定向信息存储以供路由系统处理
+                    history.replaceState(null, null, decoded);
+                }
+            }
+        }(window.location));
+    </script>
+    
     <!-- 预连接 -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>

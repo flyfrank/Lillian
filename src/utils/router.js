@@ -29,10 +29,10 @@ class Router {
    * 注册路由
    */
   initializeRoutes() {
-    // 主要路由定义
+    // 根路径重定向到hero页面
     this.addRoute('/', {
       name: 'home',
-      component: 'HomePage',
+      component: 'HeroPage',
       title: `${siteConfig.title} - ${siteConfig.subtitle}`,
       meta: {
         description: siteConfig.description,
@@ -224,7 +224,13 @@ class Router {
       
       if (!route) {
         console.warn(`No route found for path: ${path}`);
-        this.navigate('/404', { replace: true });
+        // 重定向到首页而不是404
+        if (path !== '/' && path !== '/hero') {
+          this.navigate('/', { replace: true });
+          return;
+        }
+        // 如果连首页都找不到，则显示错误
+        this.navigate('/error', { replace: true });
         return;
       }
 
