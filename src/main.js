@@ -409,12 +409,105 @@ class LoveMemorialApp {
   }
 
   /**
+   * 绑定导航事件
+   */
+  bindNavigationEvents() {
+    // 等待DOM加载完成后绑定事件
+    const bindEvents = () => {
+      // 移动端菜单切换按钮
+      const menuToggle = document.getElementById('menu-toggle');
+      if (menuToggle) {
+        menuToggle.addEventListener('click', (e) => {
+          e.preventDefault();
+          e.stopPropagation();
+          this.toggleMenu();
+        });
+        
+        // 添加触摸事件支持
+        menuToggle.addEventListener('touchstart', (e) => {
+          e.preventDefault();
+          this.toggleMenu();
+        }, { passive: false });
+      }
+      
+      // 主题切换按钮
+      const themeToggle = document.getElementById('theme-toggle');
+      if (themeToggle) {
+        themeToggle.addEventListener('click', (e) => {
+          e.preventDefault();
+          this.toggleTheme();
+        });
+      }
+      
+      // 搜索按钮
+      const searchBtn = document.getElementById('search-btn');
+      if (searchBtn) {
+        searchBtn.addEventListener('click', (e) => {
+          e.preventDefault();
+          this.openSearch();
+        });
+      }
+      
+      // 返回顶部按钮
+      const backToTop = document.getElementById('back-to-top');
+      if (backToTop) {
+        backToTop.addEventListener('click', (e) => {
+          e.preventDefault();
+          window.scrollTo({
+            top: 0,
+            behavior: 'smooth'
+          });
+        });
+      }
+      
+      // 移动端菜单链接点击事件
+      const mobileMenu = document.getElementById('mobile-menu');
+      if (mobileMenu) {
+        const mobileLinks = mobileMenu.querySelectorAll('a');
+        mobileLinks.forEach(link => {
+          link.addEventListener('click', () => {
+            // 点击链接后关闭菜单
+            this.state.isMenuOpen = false;
+            this.updateMenuState();
+          });
+        });
+      }
+      
+      // 点击页面其他区域关闭菜单
+      document.addEventListener('click', (e) => {
+        if (this.state.isMenuOpen) {
+          const navbar = document.getElementById('main-nav');
+          if (navbar && !navbar.contains(e.target)) {
+            this.state.isMenuOpen = false;
+            this.updateMenuState();
+          }
+        }
+      });
+    };
+    
+    // 如果DOM已经加载，直接绑定事件
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', bindEvents);
+    } else {
+      bindEvents();
+    }
+    
+    // 监听路由变化，重新绑定事件
+    document.addEventListener('route:changed', () => {
+      setTimeout(bindEvents, 100);
+    });
+  }
+
+  /**
    * 初始化事件监听器
    */
   initializeEventListeners() {
     // 窗口事件
     window.addEventListener('resize', this.handleResize);
     window.addEventListener('scroll', this.handleScroll);
+
+    // 导航菜单事件绑定
+    this.bindNavigationEvents();
 
     // 主题切换监听
     const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
@@ -429,6 +522,11 @@ class LoveMemorialApp {
     document.addEventListener('keydown', (e) => {
       if (e.key === 'Escape') {
         this.closeModals();
+        // 关闭移动端菜单
+        if (this.state.isMenuOpen) {
+          this.state.isMenuOpen = false;
+          this.updateMenuState();
+        }
       }
       if (e.ctrlKey && e.key === 'k') {
         e.preventDefault();
@@ -624,16 +722,93 @@ class LoveMemorialApp {
     
     if (mobileMenu) {
       if (this.state.isMenuOpen) {
+        // 显示菜单
         mobileMenu.classList.remove('hidden');
         mobileMenu.classList.add('flex');
+        
+        // 添加显示动画
+        if (this.animations.gsap) {
+          this.animations.gsap.fromTo(mobileMenu, 
+            { opacity: 0, y: -20 },
+            { opacity: 1, y: 0, duration: 0.3, ease: 'power2.out' }
+          );
+        }
       } else {
-        mobileMenu.classList.add('hidden');
-        mobileMenu.classList.remove('flex');
+        // 隐藏菜单
+        if (this.animations.gsap) {
+          this.animations.gsap.to(mobileMenu, {
+            opacity: 0,
+            y: -20,
+            duration: 0.2,
+            ease: 'power2.in',
+            onComplete: () => {
+              mobileMenu.classList.add('hidden');
+              mobileMenu.classList.remove('flex');
+            }
+          });
+        } else {
+          mobileMenu.classList.add('hidden');
+          mobileMenu.classList.remove('flex');
+        }
       }
     }
 
+    // 菜单按钮动画
     if (menuToggle) {
-      menuToggle.classList.toggle('active', this.state.isMenuOpen);
+      const spans = menuToggle.querySelectorAll('span');
+      if (spans.length >= 3) {
+        if (this.state.isMenuOpen) {
+          // 变成X形状
+          menuToggle.classList.add('active');
+          if (this.animations.gsap) {
+            this.animations.gsap.to(spans[0], {
+              rotation: 45,
+              y: 6,
+              duration: 0.3,
+              ease: 'power2.out'
+            });
+            this.animations.gsap.to(spans[1], {
+              opacity: 0,
+              duration: 0.2
+            });
+            this.animations.gsap.to(spans[2], {
+              rotation: -45,
+              y: -6,
+              duration: 0.3,
+              ease: 'power2.out'
+            });
+          }
+        } else {
+          // 变回三条线
+          menuToggle.classList.remove('active');
+          if (this.animations.gsap) {
+            this.animations.gsap.to(spans[0], {
+              rotation: 0,
+              y: 0,
+              duration: 0.3,
+              ease: 'power2.out'
+            });
+            this.animations.gsap.to(spans[1], {
+              opacity: 1,
+              duration: 0.3,
+              delay: 0.1
+            });
+            this.animations.gsap.to(spans[2], {
+              rotation: 0,
+              y: 0,
+              duration: 0.3,
+              ease: 'power2.out'
+            });
+          }
+        }
+      }
+    }
+    
+    // 防止菜单打开时的背景滚动
+    if (this.state.isMenuOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = '';
     }
   }
 
@@ -733,6 +908,9 @@ class LoveMemorialApp {
 
 // 创建全局应用实例
 const app = new LoveMemorialApp();
+
+// 暴露到全局作用域以供调试和确保功能正常
+window.app = app;
 
 // 导出应用实例
 export default app;

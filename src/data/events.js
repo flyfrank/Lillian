@@ -564,7 +564,7 @@ export const loveEvents = [
     name: '恋爱纪念日',
     title: '我们在一起的第一天',
     location: '那个秋天的上午',
-    weather: '春风和煦',
+    weather: '秋至暑未消',
     
     description: {
       short: '你噙着温柔的笑向我走来，世界有了色彩',
@@ -591,28 +591,13 @@ export const loveEvents = [
         },
         {
           src: '/assets/images/20250816/20250816-2.jpg',
-          alt: '靠近那一刻',
+          alt: '靠近的那一刻',
           caption: '一起动手做苔藓景观将我们的距离拉近'
         },
         {
           src: '/assets/images/20250816/20250816-3.jpg',
-          alt: '抓娃娃',
-          caption: '一起去抓娃娃，一个一个超级满足'
-        },
-        {
-          src: '/assets/images/20250816/20250816-4.jpg',
-          alt: '做陶艺',
-          caption: '你认真的样子非常迷人'
-        },
-        {
-          src: '/assets/images/20250816/20250816-5.jpg',
           alt: '陶艺作品',
           caption: '5个小时的陶艺制作，成果斐然'
-        },
-        {
-          src: '/assets/images/20250816/20250816-6.jpg',
-          alt: '对眼相望',
-          caption: '对眼相望，把你深深的刻进脑海'
         },
       ]
     },
