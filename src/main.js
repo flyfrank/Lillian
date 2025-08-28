@@ -18,6 +18,8 @@ class LoveMemorialApp {
   constructor() {
     this.isInitialized = false;
     this.currentTheme = 'warm';
+    this.navigationEventsBound = false; // 防止重复绑定导航事件
+    this.globalClickBound = false; // 防止重复绑定全局点击事件
     this.animations = {
       gsap: null,
       aos: null
@@ -412,45 +414,60 @@ class LoveMemorialApp {
    * 绑定导航事件
    */
   bindNavigationEvents() {
+    // 防止重复绑定标记
+    if (this.navigationEventsBound) {
+      return;
+    }
+    
     // 等待DOM加载完成后绑定事件
     const bindEvents = () => {
       // 移动端菜单切换按钮
       const menuToggle = document.getElementById('menu-toggle');
-      if (menuToggle) {
-        menuToggle.addEventListener('click', (e) => {
+      if (menuToggle && !menuToggle.hasAttribute('data-bound')) {
+        const handleMenuToggle = (e) => {
           e.preventDefault();
           e.stopPropagation();
+          console.log('菜单按钮被点击，当前状态:', this.state.isMenuOpen);
           this.toggleMenu();
-        });
+        };
+        
+        menuToggle.addEventListener('click', handleMenuToggle);
         
         // 添加触摸事件支持
-        menuToggle.addEventListener('touchstart', (e) => {
+        menuToggle.addEventListener('touchend', (e) => {
           e.preventDefault();
+          e.stopPropagation();
+          console.log('菜单按钮触摸结束，当前状态:', this.state.isMenuOpen);
           this.toggleMenu();
         }, { passive: false });
+        
+        // 标记为已绑定
+        menuToggle.setAttribute('data-bound', 'true');
       }
       
       // 主题切换按钮
       const themeToggle = document.getElementById('theme-toggle');
-      if (themeToggle) {
+      if (themeToggle && !themeToggle.hasAttribute('data-bound')) {
         themeToggle.addEventListener('click', (e) => {
           e.preventDefault();
           this.toggleTheme();
         });
+        themeToggle.setAttribute('data-bound', 'true');
       }
       
       // 搜索按钮
       const searchBtn = document.getElementById('search-btn');
-      if (searchBtn) {
+      if (searchBtn && !searchBtn.hasAttribute('data-bound')) {
         searchBtn.addEventListener('click', (e) => {
           e.preventDefault();
           this.openSearch();
         });
+        searchBtn.setAttribute('data-bound', 'true');
       }
       
       // 返回顶部按钮
       const backToTop = document.getElementById('back-to-top');
-      if (backToTop) {
+      if (backToTop && !backToTop.hasAttribute('data-bound')) {
         backToTop.addEventListener('click', (e) => {
           e.preventDefault();
           window.scrollTo({
@@ -458,31 +475,11 @@ class LoveMemorialApp {
             behavior: 'smooth'
           });
         });
+        backToTop.setAttribute('data-bound', 'true');
       }
       
       // 移动端菜单链接点击事件
-      const mobileMenu = document.getElementById('mobile-menu');
-      if (mobileMenu) {
-        const mobileLinks = mobileMenu.querySelectorAll('a');
-        mobileLinks.forEach(link => {
-          link.addEventListener('click', () => {
-            // 点击链接后关闭菜单
-            this.state.isMenuOpen = false;
-            this.updateMenuState();
-          });
-        });
-      }
-      
-      // 点击页面其他区域关闭菜单
-      document.addEventListener('click', (e) => {
-        if (this.state.isMenuOpen) {
-          const navbar = document.getElementById('main-nav');
-          if (navbar && !navbar.contains(e.target)) {
-            this.state.isMenuOpen = false;
-            this.updateMenuState();
-          }
-        }
-      });
+      this.bindMobileMenuLinks();
     };
     
     // 如果DOM已经加载，直接绑定事件
@@ -492,10 +489,59 @@ class LoveMemorialApp {
       bindEvents();
     }
     
-    // 监听路由变化，重新绑定事件
-    document.addEventListener('route:changed', () => {
-      setTimeout(bindEvents, 100);
+    // 绑定全局点击事件（只绑定一次）
+    this.bindGlobalClickEvent();
+    
+    // 标记为已绑定
+    this.navigationEventsBound = true;
+  }
+  
+  /**
+   * 绑定移动端菜单链接事件
+   */
+  bindMobileMenuLinks() {
+    const mobileMenu = document.getElementById('mobile-menu');
+    if (mobileMenu) {
+      // 移除旧的事件监听器
+      const oldLinks = mobileMenu.querySelectorAll('a[data-menu-bound]');
+      oldLinks.forEach(link => {
+        const newLink = link.cloneNode(true);
+        link.parentNode.replaceChild(newLink, link);
+      });
+      
+      // 绑定新的事件监听器
+      const mobileLinks = mobileMenu.querySelectorAll('a');
+      mobileLinks.forEach(link => {
+        link.addEventListener('click', () => {
+          // 点击链接后关闭菜单
+          this.state.isMenuOpen = false;
+          this.updateMenuState();
+        });
+        link.setAttribute('data-menu-bound', 'true');
+      });
+    }
+  }
+  
+  /**
+   * 绑定全局点击事件
+   */
+  bindGlobalClickEvent() {
+    if (this.globalClickBound) {
+      return;
+    }
+    
+    // 点击页面其他区域关闭菜单
+    document.addEventListener('click', (e) => {
+      if (this.state.isMenuOpen) {
+        const navbar = document.getElementById('main-nav');
+        if (navbar && !navbar.contains(e.target)) {
+          this.state.isMenuOpen = false;
+          this.updateMenuState();
+        }
+      }
     });
+    
+    this.globalClickBound = true;
   }
 
   /**
@@ -692,11 +738,16 @@ class LoveMemorialApp {
     this.state.isMenuOpen = false;
     this.updateMenuState();
 
+    // 重新绑定移动端菜单链接事件（因为页面内容变化了）
+    setTimeout(() => {
+      this.bindMobileMenuLinks();
+    }, 100);
+
     // 重新初始化动画
     if (this.animations.aos) {
       setTimeout(() => {
         this.animations.aos.refresh();
-      }, 100);
+      }, 200);
     }
 
     // 重置滚动位置（可选）
@@ -709,8 +760,18 @@ class LoveMemorialApp {
    * 切换菜单
    */
   toggleMenu() {
+    const prevState = this.state.isMenuOpen;
     this.state.isMenuOpen = !this.state.isMenuOpen;
+    
+    console.log(`菜单状态变化: ${prevState} -> ${this.state.isMenuOpen}`);
+    
     this.updateMenuState();
+    
+    // 确保菜单按钮可以再次点击
+    const menuToggle = document.getElementById('menu-toggle');
+    if (menuToggle) {
+      menuToggle.style.pointerEvents = 'auto';
+    }
   }
 
   /**
