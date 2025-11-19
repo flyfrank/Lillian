@@ -80,7 +80,9 @@ out
 
 # Nuxt.js build / generate output
 .nuxt
-# Note: 'docs' directory is NOT ignored as it's used for GitHub Pages
+# Hugo default build output
+public/
+# Note: 'docs' directory is used for GitHub Pages deployment
 # dist
 
 # Gatsby files
@@ -107,6 +109,10 @@ out
 
 # Docusaurus cache and generated files
 .docusaurus
+
+# Hugo generated resources (safe to ignore)
+resources/
+.hugo_build.lock
 
 # Serverless directories
 .serverless/

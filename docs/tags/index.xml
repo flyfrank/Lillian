@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Tags on 半度温差</title>
+    <link>http://localhost:8080/tags/</link>
+    <description>Recent content in Tags on 半度温差</description>
+    <generator>Hugo</generator>
+    <language>zh-cn</language>
+    <lastBuildDate>Wed, 19 Nov 2025 00:00:00 +0000</lastBuildDate>
+    <atom:link href="http://localhost:8080/tags/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Tags/成长</title>
+      <link>http://localhost:8080/tags/%E6%88%90%E9%95%BF/</link>
+      <pubDate>Wed, 19 Nov 2025 00:00:00 +0000</pubDate>
+      <guid>http://localhost:8080/tags/%E6%88%90%E9%95%BF/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Tags/当下</title>
+      <link>http://localhost:8080/tags/%E5%BD%93%E4%B8%8B/</link>
+      <pubDate>Wed, 19 Nov 2025 00:00:00 +0000</pubDate>
+      <guid>http://localhost:8080/tags/%E5%BD%93%E4%B8%8B/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Tags/感悟</title>
+      <link>http://localhost:8080/tags/%E6%84%9F%E6%82%9F/</link>
+      <pubDate>Wed, 19 Nov 2025 00:00:00 +0000</pubDate>
+      <guid>http://localhost:8080/tags/%E6%84%9F%E6%82%9F/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Tags/行动</title>
+      <link>http://localhost:8080/tags/%E8%A1%8C%E5%8A%A8/</link>
+      <pubDate>Wed, 19 Nov 2025 00:00:00 +0000</pubDate>
+      <guid>http://localhost:8080/tags/%E8%A1%8C%E5%8A%A8/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Tags/表白</title>
+      <link>http://localhost:8080/tags/%E8%A1%A8%E7%99%BD/</link>
+      <pubDate>Sat, 16 Aug 2025 00:00:00 +0000</pubDate>
+      <guid>http://localhost:8080/tags/%E8%A1%A8%E7%99%BD/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Tags/纪念日</title>
+      <link>http://localhost:8080/tags/%E7%BA%AA%E5%BF%B5%E6%97%A5/</link>
+      <pubDate>Sat, 16 Aug 2025 00:00:00 +0000</pubDate>
+      <guid>http://localhost:8080/tags/%E7%BA%AA%E5%BF%B5%E6%97%A5/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Tags/开始</title>
+      <link>http://localhost:8080/tags/%E5%BC%80%E5%A7%8B/</link>
+      <pubDate>Sat, 16 Aug 2025 00:00:00 +0000</pubDate>
+      <guid>http://localhost:8080/tags/%E5%BC%80%E5%A7%8B/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Tags/秋天</title>
+      <link>http://localhost:8080/tags/%E7%A7%8B%E5%A4%A9/</link>
+      <pubDate>Sat, 16 Aug 2025 00:00:00 +0000</pubDate>
+      <guid>http://localhost:8080/tags/%E7%A7%8B%E5%A4%A9/</guid>
+      <description></description>
+    </item>
+  </channel>
+</rss>
