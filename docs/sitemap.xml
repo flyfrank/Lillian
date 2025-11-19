@@ -2,18 +2,18 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
-    <loc>http://localhost:8080/</loc>
+    <loc>https://lillian.mpoom.cn/</loc>
     <lastmod>2025-11-19T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>http://localhost:8080/posts/</loc>
+    <loc>https://lillian.mpoom.cn/posts/</loc>
     <lastmod>2025-11-19T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>http://localhost:8080/posts/believe-in-now/</loc>
+    <loc>https://lillian.mpoom.cn/posts/believe-in-now/</loc>
     <lastmod>2025-11-19T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>http://localhost:8080/posts/anniversary-2025/</loc>
+    <loc>https://lillian.mpoom.cn/posts/anniversary-2025/</loc>
     <lastmod>2025-08-16T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>http://localhost:8080/about/</loc>
+    <loc>https://lillian.mpoom.cn/about/</loc>
   </url>
 </urlset>
