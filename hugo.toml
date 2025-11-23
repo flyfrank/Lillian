@@ -4,7 +4,7 @@ defaultContentLanguage = "zh-cn"
 title = "半度温差"
 enableRobotsTXT = true
 enableGitInfo = false
-theme = "book"
+theme = "hugo-book"
 
 # Book 主题配置
 disablePathToLower = true
