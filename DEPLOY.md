@@ -27,10 +27,14 @@ hugo -d docs
 hugo server -D -p 8080
 ```
 
-## 自动部署（GitHub Actions）
-- Pages 源为 GitHub Actions，推送到 `main/master` 自动触发：
-  - `.github/workflows/deploy.yml` 使用 Hugo 构建并发布 `./docs`
-  - 自定义域名由 `cname: lillian.mpoom.cn` 和 `static/CNAME` 保证
+## 部署到 GitHub Pages（docs 目录）
+- Pages 源设置为 `main` 分支的 `/docs` 目录
+- 部署流程：
+  1. 本地使用 `hugo -d docs` 构建静态文件到 `./docs` 目录
+  2. 将 `docs/` 目录提交到 Git 仓库
+  3. 推送到 `main/master` 分支
+  4. GitHub Pages 自动从 `/docs` 目录读取静态文件进行部署
+  - 自定义域名由 `static/CNAME` 文件配置（构建后会复制到 `docs/CNAME`）
 
 ## 静态资源
 - 将图片等静态文件放入 `static/assets/...`，构建后会复制到发布目录。

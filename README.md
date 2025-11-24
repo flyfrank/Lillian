@@ -28,6 +28,13 @@ brew install hugo
 ```bash
 git clone https://github.com/your-username/Lillian.git
 cd Lillian
+
+# 初始化并更新 git 子模块（hugo-book 主题）
+git submodule init
+git submodule update
+
+# 或使用一行命令克隆并初始化子模块
+# git clone --recurse-submodules https://github.com/your-username/Lillian.git
 ```
 
 ### 本地开发
@@ -109,7 +116,7 @@ Lillian/
 │   ├── assets/images/   # 图片资源
 │   ├── CNAME           # 自定义域名配置
 │   └── favicon.png     # 网站图标
-├── themes/book/         # Book 主题（子模块）
+├── themes/hugo-book/         # Book 主题（子模块）
 ├── docs/               # 发布目录（提交到 Git）
 ├── public/             # 默认构建输出（不提交）
 ├── hugo.toml           # Hugo 配置文件
@@ -126,7 +133,7 @@ Lillian/
 baseURL = "https://lillian.mpoom.cn/"
 languageCode = "zh-cn"
 title = "半度温差"
-theme = "book"
+theme = "hugo-book"
 
 # Book 主题参数
 [params]
@@ -172,14 +179,15 @@ disableKinds = ["taxonomy", "term"]
 
 ## 🚢 部署
 
-### GitHub Pages 自动部署
+### GitHub Pages 部署
 
-项目已配置 GitHub Actions 自动部署：
+项目通过 `docs/` 目录部署到 GitHub Pages：
 
-1. 推送代码到 `main` 分支
-2. GitHub Actions 自动构建到 `docs/` 目录
-3. GitHub Pages 从 `docs/` 目录发布
-4. 访问 https://lillian.mpoom.cn
+1. 本地使用 `hugo -d docs` 构建静态文件
+2. 提交 `docs/` 目录到 Git 仓库
+3. 推送到 `main` 分支
+4. GitHub Pages 自动从 `docs/` 目录发布
+5. 访问 https://lillian.mpoom.cn
 
 ### 手动部署
 
