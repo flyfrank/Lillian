@@ -1,1 +1,3 @@
 User-agent: *
+Allow: /
+Sitemap: https://lillian.mpoom.cn/sitemap.xml

@@ -1,0 +1,33 @@
+# -- Main Menu --
+# The main menu is displayed in the header at the top of the page.
+
+[[main]]
+  name = "首页"
+  pageRef = "/"
+  weight = 10
+
+[[main]]
+  name = "文章"
+  pageRef = "posts"
+  weight = 20
+
+[[main]]
+  name = "分类"
+  pageRef = "categories"
+  weight = 30
+
+[[main]]
+  name = "标签"
+  pageRef = "tags"
+  weight = 40
+
+[[main]]
+  name = "关于"
+  pageRef = "about"
+  weight = 50
+
+[[main]]
+  identifier = "search"
+  weight = 99
+  [main.params]
+    action = "search"
