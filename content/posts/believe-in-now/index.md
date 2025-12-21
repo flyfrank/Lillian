@@ -4,6 +4,7 @@ date: 2025-11-19
 draft: false
 tags: [感悟, 当下, 行动, 成长]
 categories: [生活感悟]
+feature: feature.jpg
 description: 不必困在"若当初"的假设里，最好的开始就是当下这一刻。
 ---
 
