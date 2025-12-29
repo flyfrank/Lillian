@@ -1,6 +1,5 @@
 ---
 title: 关于《半度温差》
-bookHidden: true
 ---
 
 相拥而立，各自成诗。📖

@@ -3,7 +3,7 @@
 
 [[main]]
   name = "首页"
-  pageRef = "/"
+  url = "/"
   weight = 10
 
 [[main]]
